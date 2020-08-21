@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Select from "react-select";
-import { classes } from "../../firebase.js";
 
 import {
     Button,
@@ -12,7 +11,7 @@ import {
 
 import { withStyles } from "@material-ui/core/styles";
 
-import "../../css/Classroom.css";
+import "../../css/Collection.css";
 
 // FUNC to position modal in the middle of the screen
 function getModalStyle() {
@@ -30,7 +29,7 @@ function getModalStyle() {
 const modelStyles = theme => ({
     paper: {
         position: "absolute",
-        width: theme.spacing.unit * 50,
+        width: theme.spacing.unit * 60,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
@@ -66,24 +65,29 @@ const btnStyle = {
     }
 };
 
-class ClassroomModal extends Component {
+class CollectionModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             addOpen: false,
             openOpen: false,
             deleteOpen: false,
-            newClassroomID: ""
+            newcollectionID: ""
         };
     }
 
-    handleChange = (selectedClassroom) => {
-        window.location.href = window.origin + "/class/" + selectedClassroom.value;
+    handleChange = (selectedCollection) => {
+        window.location.assign(window.origin + "/collection/" + selectedCollection.value);
     }
 
-    handleDelete = (selectedClassroom) => {
-        this.props.classroomActions.deleteClass(selectedClassroom.value, selectedClassroom.label);
+    handleDelete = (selectedCollection) => {
+        let needsToRedirect = (this.props.openCollection === selectedCollection.label);
+        this.props.collectionActions.deleteCollection(selectedCollection.value, selectedCollection.label, this.props.user.uid);
         this.handleCloseAll();
+        if(needsToRedirect){
+            window.location.assign("/");
+        }
+        this.props.deleteCallback(selectedCollection.label);
     }
 
     handleTextChange = name => event => {
@@ -106,78 +110,75 @@ class ClassroomModal extends Component {
 
     handleCloseAll = () => {
         this.setState({ addOpen: false, openOpen: false, deleteOpen: false });
-        this.props.handleClassroomClose();
+        this.props.handleCollectionClose();
     }
 
-    selectClassroom = () => {
-        const userClassrooms = this.props.classrooms.classrooms;
+    selectCollection = () => {
+        const userCollections = this.props.collections.collections;
         let optionItems = [];
-        const placeholder = "Select a classroom";
+        const placeholder = "Select a collection";
 
-        userClassrooms.map((classroom) =>
+        userCollections.map((collection) =>
             optionItems.push({
-                value: classroom.classroomID,
-                label: classroom.classroomID
+                value: collection.collectionID,
+                label: collection.collectionID
             })
         );
 
         return (
             <div>
-                <h5>Select a classroom to open.</h5>
+                <h5>Select a collection to open.</h5>
                 <Select placeholder={placeholder} options={optionItems} onChange={this.handleChange} />
             </div>
         );
     }
 
-    deleteClassroom = () => {
-        const userClassrooms = this.props.classrooms.classrooms;
+    deleteCollection = () => {
+        const userCollections = this.props.collections.collections;
         let optionItems = [];
-        const placeholder = "Select a classroom";
+        const placeholder = "Select a collection";
 
-        userClassrooms.map((classroom) =>
+        userCollections.map((collection) =>
             optionItems.push({
-                value: classroom.id,
-                label: classroom.classroomID
+                value: collection._id,
+                label: collection.collectionID
             })
         );
 
         return (
             <div>
-                <h5>Select a classroom to delete.</h5>
+                <h5>Select a collection to delete.</h5>
                 <Select placeholder={placeholder} options={optionItems} onChange={this.handleDelete} />
             </div>
         );
     }
 
     handleSubmit = () => {
-        let existingClasses = [];
         if (!this.props.user) {
-            window.alert("You must be signed in to create a class.");
+            window.alert("You must be signed in to create a collection.");
             this.handleAddClassToggle();
         }
         else {
-            let newClassroomID = this.state.newClassroomID.toLowerCase();
-            classes.where("classroomID", "==", newClassroomID).get().then(snap => {
-                snap.forEach(doc => {
-                    existingClasses.push({
-                        id: doc.id
-                    });
-                });
-            }).then(() => {
-                if (existingClasses.length > 0) {
-                    window.alert("Error: A class already exists with that class code.");
-                }
-                else {
-                    let newID = classes.doc().id;
-                    classes.doc(newID).set({
-                        classroomID: newClassroomID,
-                        timestamp: Date.now(),
-                        uid: this.props.user.uid
-                    }).then(() => {
-                        this.props.classroomActions.asyncClasses(this.props.user.uid);
-                        window.alert("Classroom added!");
+            let name = this.state.newcollectionID.toLowerCase();
+    
+            fetch("/apiv1/collections", {
+                method: "POST", 
+                body: JSON.stringify({collectID: name}),
+                headers:{"Content-Type": "application/json", "x-access-token": this.props.user.uid}
+            }).then((resp) => {
+
+                switch(resp.status) {
+                    case 201://Success
+                        this.props.collectionActions.asyncCollections(this.props.user.uid);
+                        window.alert("Collection added!");
                         this.handleCloseAll();
-                    });
+                        break;
+                    case 409:
+                        window.alert("Error: A collection already exists with that collection name.");
+                        break;
+                    default:
+                        window.alert(`Error creating collection: ${resp.statusText}`);
+                        break;
                 }
             });
         }
@@ -185,11 +186,11 @@ class ClassroomModal extends Component {
 
     addClass = () => (
         <div>
-            <h5>Please enter a new class code.</h5>
+            <h5>Please enter a new collection name.</h5>
             <TextField
                 id="standard-name"
                 type="text"
-                onChange={this.handleTextChange("newClassroomID")}
+                onChange={this.handleTextChange("newcollectionID")}
             />
             <Button
                 color="primary"
@@ -210,41 +211,41 @@ class ClassroomModal extends Component {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={this.props.open}
-                    onClose={this.props.handleClassroomToggle} >
+                    onClose={this.props.handleCollectionToggle} >
                     <div style={getModalStyle()} className={classes.paper}>
                         <ButtonBase
                             style={{ position: "absolute", right: 15, top: 15 }}
-                            onClick={this.props.handleClassroomToggle} >
+                            onClick={this.props.handleCollectionToggle} >
                             <Icon className="material-icons">clear</Icon>
                         </ButtonBase >
                         <div className="row d-flex">
-                            <div className="col-12 border-bottom">Classroom Options</div>
+                            <div className="col-12 border-bottom">Collection Options</div>
                             <div className="col-6">
                                 <ButtonBase
                                     style={btnStyle.base}
                                     onClick={() => { this.handleOpenClassToggle(); }} >
-                                    <Icon className="material-icons">storage</Icon>
-                                    Open a Class
+                                    <Icon className="material-icons collection-icon">storage</Icon>
+                                    Open a Collection
                                 </ButtonBase>
                                 <ButtonBase
                                     style={btnStyle.base}
                                     onClick={() => { this.handleDeleteClassToggle(); }} >
-                                    <Icon className="material-icons">delete</Icon>
-                                    Delete a Class
+                                    <Icon className="material-icons collection-icon">delete</Icon>
+                                    Delete a Collection
                                 </ButtonBase>
                             </div>
                             <div className="col-6">
                                 <ButtonBase
                                     style={btnStyle.base}
                                     onClick={() => { this.handleAddClassToggle(); }} >
-                                    <Icon className="material-icons">add_circle</Icon>
-                                    Create a Class
+                                    <Icon className="material-icons collection-icon">add_circle</Icon>
+                                    Create a Collection
                                 </ButtonBase>
                                 <ButtonBase
                                     style={btnStyle.base}
-                                    onClick={() => window.open(window.origin + "/about/classrooms")} >
-                                    <Icon className="material-icons">info</Icon>
-                                    About Classes
+                                    onClick={() => window.open(window.origin + "/about/collections")} >
+                                    <Icon className="material-icons collection-icon">info</Icon>
+                                    About Collections
                                 </ButtonBase>
                             </div>
                         </div>
@@ -275,7 +276,7 @@ class ClassroomModal extends Component {
                             onClick={() => this.handleOpenClassToggle()} >
                             <Icon className="material-icons">clear</Icon>
                         </ButtonBase >
-                        <this.selectClassroom />
+                        <this.selectCollection />
                     </div>
                 </Modal>
                 <Modal
@@ -289,7 +290,7 @@ class ClassroomModal extends Component {
                             onClick={() => this.handleDeleteClassToggle()} >
                             <Icon className="material-icons">clear</Icon>
                         </ButtonBase >
-                        <this.deleteClassroom />
+                        <this.deleteCollection />
                     </div>
                 </Modal>
             </div >
@@ -297,6 +298,6 @@ class ClassroomModal extends Component {
     }
 }
 
-const Classroom = withStyles(modelStyles)(ClassroomModal);
+const Collection = withStyles(modelStyles)(CollectionModal);
 
-export default Classroom;
+export default Collection;

@@ -62,6 +62,8 @@ export default class Reference extends React.Component {
                         return <span>{refFunctions.boolText(element.name)}{comma}</span>;
                     case "array":
                         return <span>{refFunctions.arrayText(element.name)}{comma}</span>;
+                    case "data":
+                        return <span>{refFunctions.dataText(element.name)}{comma}</span>;
                     default:
                         return null;
                 }
@@ -214,12 +216,13 @@ export default class Reference extends React.Component {
                                 </Tabs>
                             </div>
 
-                            {<div style={{ margin: 7, overflow: "hidden" }}>
+                            {<div style={{ margin: 7, overflow: "hidden", minHeight: "2em" }}>
                                 <p style={{ fontSize: "80%" }}> Key: <span className="array">array </span>
                                     <span className="bool">bool </span>
                                     <span className="number">number </span>
                                     <span className="string">string </span>
-                                    <span className="group">group </span></p>
+                                    <span className="group">group </span>
+                                    <span className="data">data</span></p>
                             </div>}
                             {this.state.value === "a" &&
                                 <div style={{ marginTop: 0, overflow: "scroll" }}>

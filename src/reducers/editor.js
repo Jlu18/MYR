@@ -4,6 +4,7 @@ import Myr from "../myr/Myr";
 
 const initial_state = {
     text: "",
+    savedText: "",
     objects: [],
     assets: [],
     message: {
@@ -38,7 +39,6 @@ function noEvalEvaluation(text) {
 }
 
 export default function editor(state = initial_state, action) {
-
     switch (action.type) {
         case types.EDITOR_RENDER:
             m.reset();
@@ -87,7 +87,8 @@ export default function editor(state = initial_state, action) {
             m.reset();
             return {
                 ...initial_state,
-                text: action.text
+                text: action.text,
+                savedText: state.savedText,
             };
 
         case types.EDITOR_RECOVER:
@@ -100,6 +101,12 @@ export default function editor(state = initial_state, action) {
 
             // Call editor function again with new params
             return editor({ ...state }, { type: types.EDITOR_RENDER, text: snapshots[stableIndex].text });
+            
+        case types.EDITOR_UPDATE_SAVEDTEXT:
+            return {
+                ...state,
+                savedText: action.savedText,
+            };
         default:
             return state;
     }

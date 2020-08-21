@@ -81,16 +81,17 @@ class ConfigModal extends Component {
             open: false,
             skyColor: this.props.scene.settings.color,
             displaySkyColorPicker: false,
-            displayFloorColorPicker: false,
             anchorEl: null,
+            displayFloorColorPicker: false,
             qrCodeOpen: false,
             pwProtectOpen: false,
             shareOpen: false,
             addClassOpen: false,
             email: "",
             sendTo: [],
-            classroomID: "",
-            value: "a"
+            collectionID: "",
+            value: "a",
+            collectionError: ""
         };
         this.emailRef = React.createRef();
     }
@@ -255,7 +256,10 @@ class ConfigModal extends Component {
         return (
             <ButtonBase
                 style={style}
-                onClick={() => this.props.sceneActions.toggleFly()} >
+                onClick={() => {
+                    this.props.handleRender();
+                    this.props.sceneActions.toggleFly();
+                }} >
                 {
                     this.props.scene.settings.canFly
                         ? <Icon className="material-icons">toggle_on</Icon>
@@ -296,7 +300,7 @@ class ConfigModal extends Component {
                 style={style}
                 onClick={() => {
                     this.props.handleRender();
-                    this.props.sceneActions.toggleFloor();
+                    this.props.sceneActions.toggleFloor();  
                 }} >
                 {
                     this.props.scene.settings.showFloor
@@ -308,49 +312,59 @@ class ConfigModal extends Component {
         );
     };
 
-    addClassroomToggle = () => {
+    addCollectionToggle = () => {
         return (
             <ButtonBase
                 style={btnStyle.base}
                 onClick={this.handleAddClassToggle}
             >
                 <Icon className="material-icons">library_add</Icon>
-                Add to Class
+                Add to Collection
             </ButtonBase >
         );
     };
 
     handleAddClassToggle = () => {
-        this.setState({ addClassOpen: !this.state.addClassOpen });
+        this.setState({ addClassOpen: !this.state.addClassOpen, collectionError: "" });
     };
 
     classInfoToggle = () => {
         return (
             <ButtonBase
                 style={btnStyle.base}
-                onClick={() => window.open(window.origin + "/about/classrooms")} >
+                onClick={() => window.open(window.origin + "/about/collections")} >
                 <Icon className="material-icons">info</Icon>
-                About
+                About Collections
             </ButtonBase >
         );
     };
 
     addClass = () => (
         <div>
-            <h5>Please enter your class code</h5>
-            {this.props.scene && this.props.scene.settings.classroomID ? <p>{"Current classroom: " + this.props.scene.settings.classroomID}</p> : null}
+            <h5>Please enter your collection name.</h5>
+            {this.props.scene && this.props.scene.settings.collectionID ? <p>{"Current collection: " + this.props.scene.settings.collectionID}</p> : null}
+            {this.state.collectionError ? <p style={{color: "red"}}>{`Error: ${this.state.collectionError}`}</p> : null}
             <TextField
                 id="standard-name"
                 type="text"
-                onChange={this.handleTextChange("classroomID")}
+                onChange={this.handleTextChange("collectionID")}
             />
             <Button
                 color="primary"
                 onClick={() => {
-                    this.handleAddClassToggle();
-                    this.props.sceneActions.addClassroomID(this.state.classroomID.toLowerCase());
-                    this.props.handleSave();
-                    this.props.handleSaveClose();
+                    let collectionID = this.state.collectionID.toLowerCase().trim();
+
+                    fetch(`/apiv1/collections/collectionID/${collectionID}/exists`).then((resp) => {
+                        if(resp.status === 200){
+                            this.handleAddClassToggle();
+                            this.props.sceneActions.addCollectionID(collectionID);
+                            this.props.handleSave(collectionID);
+                            this.props.handleSaveClose();
+                            this.setState({collectionError: ""});
+                        }else{
+                            this.setState({collectionError: `Collection ${collectionID} does not exist!`});
+                        }
+                    });
                 }} >
                 Save
             </Button>
@@ -521,10 +535,14 @@ class ConfigModal extends Component {
                                                     Add PW
                                                 </ButtonBase> */}
                                             </div>
-                                            <div className="col-12 border-bottom pt-4">Classroom Control</div>
-                                            <div className="col-6">
-                                                <this.addClassroomToggle />
-                                            </div>
+                                            <div className="col-12 border-bottom pt-4">Collection Control</div>
+                                            {this.props.displayCollectionConfig ? 
+                                                <div className="col-6">
+                                                    <this.addCollectionToggle />
+                                                </div>
+                                                :
+                                                <></>
+                                            }
                                             <div className="col-6">
                                                 <this.classInfoToggle />
                                             </div>
