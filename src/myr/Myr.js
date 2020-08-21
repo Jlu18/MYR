@@ -79,20 +79,6 @@ class Myr {
     reset = () => {
         // Reset base params, we might be able to merge two objects later
         this.id = 0;
-<<<<<<< HEAD
-        this.color = "red";
-        this.counter = 0;
-        this.position = { x: 0, y: 0, z: 0 };
-        this.scale = { x: 1, y: 1, z: 1 };
-        this.rotation = { x: 0, y: 0, z: 0 };
-        this.radius = 1;
-        this.phiLength = 360;
-        this.loop = true;
-        this.duration = 1000;
-        this.magnitude = { spin: 360, fadeOut: 0, general: 1 };
-        this.startEvent = "";
-        this.delay = 0;
-=======
         this.cursor = {
             color: "red",
             position: {
@@ -120,7 +106,6 @@ class Myr {
                 general: 1
             }
         };
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         // restore the base objects of the scene
         this.els = [];
         if (this.baseEls) {
@@ -138,34 +123,6 @@ class Myr {
     * @summary - Reset the cursor to the default
     */
     resetCursor = () => {
-<<<<<<< HEAD
-        this.color = "red";
-        this.position = { x: 0, y: 0, z: 0 };
-        this.scale = { x: 1, y: 1, z: 1 };
-        this.rotation = { x: 0, y: 0, z: 0 };
-        this.radius = "1";
-        this.phiLength = 360;
-        this.loop = true;
-        this.duration = 1000;
-        this.magnitude = { spin: 360, fadeOut: 0, general: 1 };
-        this.startEvent = "";
-        this.delay = 0;
-    }
-    resetTransformationCursor = () => {
-        this.color = "red";
-        this.position = { x: 0, y: 0, z: 0 };
-        this.scale = { x: 1, y: 1, z: 1 };
-        this.rotation = { x: 0, y: 0, z: 0 };
-        this.radius = "1";
-        this.phiLength = 360;
-    }
-    resetAnimationCursor = () => {
-        this.loop = true;
-        this.duration = 1000;
-        this.magnitude = { spin: 360, fadeOut: 0, general: 1 };
-        this.startEvent = "";
-        this.delay = 0;
-=======
         this.cursor = {
             color: "red",
             position: {
@@ -193,7 +150,6 @@ class Myr {
                 general: 1
             }
         };
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
     }
 
     genNewId = () => {
@@ -826,15 +782,9 @@ class Myr {
 
     // Animate the Aframe element which is passed as arg
     animate = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.spin;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.spin;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: rotation;
@@ -850,15 +800,9 @@ class Myr {
     };
 
     spin = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.spin;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.spin;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: rotation;
@@ -875,15 +819,9 @@ class Myr {
     };
 
     yoyo = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: position;
@@ -899,15 +837,9 @@ class Myr {
     };
 
     sideToSide = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       dir: alternate;
@@ -924,15 +856,9 @@ class Myr {
     };
 
     goUp = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: position;
@@ -948,15 +874,9 @@ class Myr {
     };
 
     goDown = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: position;
@@ -972,15 +892,9 @@ class Myr {
     };
 
     goLeft = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: position;
@@ -996,15 +910,9 @@ class Myr {
     };
 
     goRight = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: position;
@@ -1020,15 +928,9 @@ class Myr {
     };
 
     goTowards = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: position;
@@ -1044,15 +946,9 @@ class Myr {
     };
 
     goAway = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: position;
@@ -1069,15 +965,9 @@ class Myr {
     };
 
     grow = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: scale;
@@ -1093,15 +983,9 @@ class Myr {
     };
 
     shrink = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: scale;
@@ -1117,15 +1001,9 @@ class Myr {
     };
 
     fadeOut = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.fadeOut;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.fadeOut;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: components.material.material.opacity;
@@ -1144,15 +1022,9 @@ class Myr {
     }
 
     fadeIn = (outerElId, magnitude = null, loop = null, duration = null) => {
-<<<<<<< HEAD
-        magnitude = magnitude !== null ? magnitude : this.magnitude.general;
-        loop = loop !== null ? loop : this.loop;
-        duration = duration !== null ? duration : this.duration;
-=======
         magnitude = magnitude !== null ? magnitude : this.cursor.magnitude.general;
         loop = loop !== null ? loop : this.cursor.loop;
         duration = duration !== null ? duration : this.cursor.duration;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
         let el = this.getEl(outerElId);
         let anim = `
       property: components.material.material.opacity;

@@ -1,10 +1,6 @@
 {
     "name": "myr",
-<<<<<<< HEAD
-    "version": "1.5.5",
-=======
     "version": "2.0.1",
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
     "private": false,
     "engines": {
         "node": "12.18.2"

@@ -9,16 +9,8 @@ The Engaging Computing Group develops new technologies to enable learners—yout
 ## Status
 [![CircleCI](https://circleci.com/gh/engaging-computing/MYR.svg?style=shield)](https://circleci.com/gh/engaging-computing/MYR)
 
-<<<<<<< HEAD
-## Change Log - 1.5.4 -> 1.5.5
-- Scenes without a preview image now appear
-- Firebase scenes with old names and IDs in settings are removed.
-- ESLint now doesn't allow != and code is updated to reflect that.
-- Infinite loop detector (commented out)
-=======
 ## Change Log - 2.0.0 -> 2.0.1
 - Fixed bug where tokens expired after one hour and weren't refreshed
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
 
 ## Acknowledgments
 MYR uses [Aframe](https://aframe.io), a fantastic open source project, to render objects and effects in the three dimensional space.  

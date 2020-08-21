@@ -7,30 +7,11 @@ export function asyncUserProj(id) {
     // fetch user's project
     return (dispatch) => {
         if (id) {
-<<<<<<< HEAD
-            let userVals = [];
-            scenes.where("uid", "==", id).get().then(snap => {
-                snap.forEach(doc => {
-                    storageRef.child(`/images/perspective/${doc.id}`)
-                        .getDownloadURL()
-                        .catch(() => {
-                            console.error("Error: Missing preview image");
-                        })
-                        .then((img) => {
-                            let dat = doc.data();
-                            userVals.push({
-                                name: dat.name,
-                                id: doc.id,
-                                data: dat,
-                                url: img ? img : "/img/no_preview.jpg"
-                            });
-=======
             fetch(`${sceneRef}/`, {headers: {"x-access-token": id}}).then((response) =>{
                 if(response.status === 200){
                     response.json().then((json) =>{
                         json.forEach(element => {
                             element.url = `${previewRef}/${element._id}`;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
                         });
                         dispatch(syncUserProj(json));
                     });
@@ -47,30 +28,11 @@ export function syncUserProj(payload) {
 export const asyncExampleProj = () => {
     // fetch example projects
     return (dispatch) => {
-<<<<<<< HEAD
-        let exampleVals = [];
-        scenes.where("uid", "==", "1").get().then(snap => {
-            snap.forEach(doc => {
-                storageRef.child(`/images/perspective/${doc.id}`)
-                    .getDownloadURL()
-                    .catch(() => {
-                        console.error("Error: Missing preview image");
-                    })
-                    .then((img) => {
-                        let dat = doc.data();
-                        exampleVals.push({
-                            name: dat.name,
-                            id: doc.id,
-                            data: dat,
-                            url: img ? img : "/img/no_preview.jpg"
-                        });
-=======
         fetch(`${sceneRef}/example`).then((response) =>{
             if(response.status === 200){
                 response.json().then((json) =>{
                     json.forEach(element => {
                         element.url = `${previewRef}/${element._id}`;
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
                     });
                     dispatch(syncExampleProj(json));
                 });
