@@ -7,12 +7,9 @@ import MyrTour from "./MyrTour.js";
 import ProjectView from "./ProjectView.js";
 import CourseSelect from "../../courses/CourseSelect.js";
 import WelcomeScreen from "../WelcomeScreen.js";
-<<<<<<< HEAD
 import CursorPopup from "../CursorPopup.js";
-=======
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import sockets from "socket.io-client";
->>>>>>> 69cbd0dd60f69d82e839eceb5a0480abd0f0a847
 
 import * as layoutTypes from "../../../constants/LayoutTypes.js";
 
