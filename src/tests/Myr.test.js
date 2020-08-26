@@ -305,6 +305,8 @@ describe("Component Animations", () => {
       to: 0 360 0;
       dur: 1000;
       loop: true;
+      startEvents: ;
+      delay: 0;
     `);
         myr.animate(bId, 720, false, 2000);
         expect(el.animation).toEqual(`
@@ -313,6 +315,8 @@ describe("Component Animations", () => {
       to: 0 720 0;
       dur: 2000;
       loop: false;
+      startEvents: ;
+      delay: 0;
     `);
     });
 
@@ -328,6 +332,8 @@ describe("Component Animations", () => {
       loop: true;
       easing: linear;
       to: 0 360 0;
+      startEvents: ;
+      delay: 0;
     `);
         myr.spin(bId, 720, false, 2000);
         expect(el.animation__spin).toEqual(`
@@ -337,6 +343,8 @@ describe("Component Animations", () => {
       loop: false;
       easing: linear;
       to: 0 720 0;
+      startEvents: ;
+      delay: 0;
     `);
     });
 
@@ -472,7 +480,37 @@ describe("Component Animations", () => {
         expect(el).toHaveProperty("animation__shrink");
     });
 
+    it("it should add startEvent to the cursor", () => {
+        myr.reset();
+        myr.setAnimationTrigger("none");
+        expect(myr.startEvent).toEqual("");
+        myr.setAnimationTrigger("click");
+        expect(myr.startEvent).toEqual("click");
+        myr.setAnimationTrigger();
+        expect(myr.startEvent).toEqual("");
+        myr.setAnimationTrigger("mouseEnter");
+        expect(myr.startEvent).toEqual("mouseenter");
+        myr.setAnimationTrigger("mouseLeave");
+        expect(myr.startEvent).toEqual("mouseleave");
 
+        //check for stable model with bad values
+        myr.setAnimationTrigger("wrongArgument");
+        expect(myr.startEvent).toEqual("mouseleave");
+        myr.setAnimationTrigger(0);
+        expect(myr.startEvent).toEqual("mouseleave");
+        myr.setAnimationTrigger({});
+        expect(myr.startEvent).toEqual("mouseleave");
+    });
+
+    it("it should add delay to the cursor", () => {
+        myr.reset();
+        myr.setDelay(1000);
+        expect(myr.delay).toEqual(1000);
+        myr.setDelay("a");
+        expect(myr.delay).toEqual(1000);
+        myr.setDelay({});
+        expect(myr.delay).toEqual(1000);
+    });
 });
 
 describe("Other Myr functionality", () => {

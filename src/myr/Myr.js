@@ -38,12 +38,13 @@ class Myr {
                 general: 1
             }
         };
+         this.startEvent = "";
+        this.delay = 0;
         if (baseEls) {
             Object.keys(this.baseEls).forEach(it => {
                 this.els[it] = this.baseEls[it];
             });
         }
-
     }
 
     /**
@@ -790,6 +791,8 @@ class Myr {
       to: ${el.rotation.x} ${el.rotation.y + magnitude} ${el.rotation.z};
       dur: ${duration};
       loop: ${Boolean(loop)};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation = anim;
         return outerElId;
@@ -807,6 +810,8 @@ class Myr {
       loop: ${Boolean(loop)};
       easing: linear;
       to: ${el.rotation.x} ${el.rotation.y + magnitude} ${el.rotation.z};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__spin = anim;
         return outerElId;
@@ -823,6 +828,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.position.x} ${el.position.y + magnitude} ${el.position.z};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__yoyo = anim;
         return outerElId;
@@ -839,6 +846,8 @@ class Myr {
       loop: ${Boolean(loop)};
       property: position;
       to: ${el.position.x + magnitude} ${el.position.y} ${el.position.z};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.position = { ...el.position, x: el.position.x - magnitude };
         el.animation__sidetoside = anim;
@@ -856,6 +865,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.position.x} ${el.position.y + magnitude} ${el.position.z};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__goup = anim;
         return outerElId;
@@ -872,6 +883,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.position.x} ${el.position.y - magnitude} ${el.position.z};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__godown = anim;
         return outerElId;
@@ -888,6 +901,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.position.x - magnitude} ${el.position.y} ${el.position.z};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__goleft = anim;
         return outerElId;
@@ -904,6 +919,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.position.x + magnitude} ${el.position.y} ${el.position.z};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__goright = anim;
         return outerElId;
@@ -920,6 +937,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.position.x} ${el.position.y} ${el.position.z + magnitude};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__goleft = anim;
         return outerElId;
@@ -936,6 +955,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.position.x} ${el.position.y} ${el.position.z - magnitude};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__goaway = anim;
         return outerElId;
@@ -952,6 +973,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.scale.x * magnitude} ${el.scale.y * magnitude} ${el.scale.z * magnitude};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__grow = anim;
         return outerElId;
@@ -968,6 +991,8 @@ class Myr {
       dur: ${duration};
       loop: ${Boolean(loop)};
       to: ${el.scale.x / magnitude} ${el.scale.y / magnitude} ${el.scale.z / magnitude};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__shrink = anim;
         return outerElId;
@@ -986,6 +1011,8 @@ class Myr {
       isRawProperty: true;
       from: 1;
       to: ${magnitude};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.material = el.material + "; transparent: true;";
         el.animation__fadeout = anim;
@@ -1005,6 +1032,8 @@ class Myr {
       isRawProperty: true;
       from: 0;
       to: ${magnitude};
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.material = el.material + "; transparent: true;";
         el.animation__fadein = anim;
@@ -1042,10 +1071,43 @@ class Myr {
       loop: ${Boolean(this.cursor.loop)};
       isRawProperty: true;
       type: color;
+      startEvents: ${this.startEvent};
+      delay: ${this.delay};
     `;
         el.animation__color = anim;
         return outerElId;
     }
+
+    setDelay = (ts) => {
+        if (typeof ts === "number") {
+            this.delay = ts;
+        } else {
+            console.error("must pass a numeric for setDelay");
+        }
+        return this.delay;
+    };
+
+    events = ["click", "mouseenter", "mouseleave", "none"];
+
+    setAnimationTrigger = (event = "none") => {
+
+        if (typeof event === "string") {
+            event = event.toLowerCase();
+            if (this.events.includes(event)) {
+                if (event === "none") {
+                    this.startEvent = "";
+                } else {
+                    this.startEvent = event;
+                }
+            } else {
+                console.error("must pass specific string event for setAnimationTrigger.");
+            }
+        } else {
+            console.error("must pass string for setAnimationTrigger");
+        }
+        return this.startEvent;
+    };
+
 
     /********************* GETTERS *********************/
 

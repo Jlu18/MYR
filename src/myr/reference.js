@@ -417,6 +417,16 @@ let animations = [
         example: "setMagnitude"
     },
     {
+        name: "setAnimationTrigger",
+        parameters: [{ type: "string", name: "startEvent" }],
+        description: <span>The setAnimationTrigger function sets the startEvent attribute of the cursor in string. Lists are click, mouseEnter, mouseLeave, and none. The default is none</span>,
+    },
+    {
+        name: "setDelay",
+        parameters: [{ type: "number", name: "time" }],
+        description: <span>	The setDelay function sets the delay attribute of the cursor in milliseconds. The default value is 0.</span>,
+    },
+    {
         name: "spin",
         parameters: [{ type: "string", name: "elementID" }],
         description: <span>The spin function spins the given element around the y axis in degrees.</span>,
